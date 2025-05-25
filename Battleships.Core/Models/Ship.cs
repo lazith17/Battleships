@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Battleships.Core.Models
 {
+    // Represents the class of a ship in the game
     public enum ShipClass
     {
         Battleship,
         Destroyer
     }
 
+    // Represents a ship in the Battleships game
     public class Ship
     {
         public ShipClass Class { get; }

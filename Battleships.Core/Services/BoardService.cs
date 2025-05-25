@@ -33,8 +33,10 @@ namespace Battleships.Core
             PlaceShip(new Ship(ShipClass.Destroyer, 4));
         }
 
+
         public bool ShootAt(Coordinate coordinate)
         {
+            // Validate the coordinate
             foreach (var ship in _ships)
             {
                 var position = ship.Positions.FirstOrDefault(p => p.Row == coordinate.Row && p.Column == coordinate.Column);
@@ -42,6 +44,7 @@ namespace Battleships.Core
                 {
                     if (!ship.Hits.Contains(position))
                     {
+                        // Mark the ship as hit
                         ship.Hits.Add(position);
                         return true;
                     }
@@ -49,6 +52,7 @@ namespace Battleships.Core
                 }
             }
 
+            // If no ship was hit, mark the coordinate as a miss
             if (!_misses.Contains(coordinate))
             {
                 _misses.Add(coordinate);
@@ -60,6 +64,7 @@ namespace Battleships.Core
 
         public string GetBoardStatus()
         {
+            // Generate a string representation of the board status
             var status = new System.Text.StringBuilder();
             status.AppendLine("   A B C D E F G H I J");
 
@@ -68,6 +73,7 @@ namespace Battleships.Core
                 status.Append($"{row + 1,2} ");
                 for (int col = 0; col < BoardSize; col++)
                 {
+                    // Check if the coordinate has a ship, hit, or miss
                     var coordinate = new Coordinate(row, col);
                     var ship = GetShipAtCoordinate(coordinate);
 
@@ -94,12 +100,14 @@ namespace Battleships.Core
             return status.ToString();
         }
 
+        // Get the ship at a specific coordinate, if any
         public Ship GetShipAtCoordinate(Coordinate coordinate)
         {
             return _ships.FirstOrDefault(ship =>
                 ship.Positions.Any(p => p.Row == coordinate.Row && p.Column == coordinate.Column));
         }
 
+        // Place a ship on the board at a random position and orientation
         private void PlaceShip(Ship ship)
         {
             bool placed = false;
@@ -112,6 +120,7 @@ namespace Battleships.Core
                 var startRow = _random.Next(BoardSize);
                 var startCol = _random.Next(BoardSize);
 
+                // Reset ship positions
                 if (direction == 0 && startCol + ship.Size <= BoardSize)
                 {
                     if (CanPlaceShip(startRow, startCol, ship.Size, true))
@@ -123,6 +132,7 @@ namespace Battleships.Core
                         placed = true;
                     }
                 }
+                // Place vertically
                 else if (direction == 1 && startRow + ship.Size <= BoardSize)
                 {
                     if (CanPlaceShip(startRow, startCol, ship.Size, false))
@@ -136,6 +146,7 @@ namespace Battleships.Core
                 }
             }
 
+            // If placed successfully, add the ship to the board
             if (placed)
             {
                 _ships.Add(ship);
@@ -146,10 +157,12 @@ namespace Battleships.Core
             }
         }
 
+        // Check if a ship can be placed at the specified coordinates and orientation
         private bool CanPlaceShip(int startRow, int startCol, int size, bool isHorizontal)
         {
             for (int i = 0; i < size; i++)
             {
+                // Calculate the row and column based on orientation
                 var row = isHorizontal ? startRow : startRow + i;
                 var col = isHorizontal ? startCol + i : startCol;
 

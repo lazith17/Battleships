@@ -8,11 +8,13 @@ using Xunit;
 
 namespace Battleships.Tests
 {
+    // Unit tests for the BattleshipsController
     internal class BattleshipsControllerTests
     {
         private readonly Mock<IBoardService> _boardServiceMock;
         private readonly BattleshipsController _controller;
 
+        // Constructor to initialize the mock service and controller
         public BattleshipsControllerTests()
         {
             // Initialize mock board service and controller for each test
@@ -21,6 +23,7 @@ namespace Battleships.Tests
             _controller = new BattleshipsController(_boardServiceMock.Object, loggerMock.Object);
         }
 
+        // Test to ensure the board is initialized correctly
         [Fact]
         public async Task GetBoard_ReturnsCurrentBoardStatus()
         {
@@ -37,6 +40,7 @@ namespace Battleships.Tests
             Assert.Equal(expectedBoard, okResult.Value);
         }
 
+        // Test to ensure shooting at a coordinate works correctly
         [Fact]
         public async Task NewGame_ResetsBoardAndReturnsOk()
         {
@@ -53,6 +57,7 @@ namespace Battleships.Tests
             Assert.NotNull(okResult.Value);
         }
 
+        // Test to ensure shooting at a coordinate works correctly
         [Theory]
         [InlineData("A1", 0, 0)]
         [InlineData("J10", 9, 9)]
@@ -82,6 +87,7 @@ namespace Battleships.Tests
             Assert.Throws<ArgumentException>(() => _controller.ParseCoordinate(input));
         }
 
+        // Test to ensure shooting at a coordinate returns the correct response
         [Fact]
         public void CheckForSunkShip_WhenShipSunk_ReturnsShipClass()
         {

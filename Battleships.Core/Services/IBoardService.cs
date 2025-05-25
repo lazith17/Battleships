@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Battleships.Core.Services
 {
+    // Interface for the board service that manages the game board and ship placements
     public interface IBoardService
     {
         void InitializeBoard();

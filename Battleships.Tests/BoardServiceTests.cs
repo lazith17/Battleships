@@ -4,6 +4,7 @@ using Battleships.Tests;
 
 namespace Battleships.Tests
 {
+    // Unit tests for the BoardService class
     public class BoardServiceTests
     {
         private readonly BoardService _service;
@@ -13,6 +14,7 @@ namespace Battleships.Tests
             _service = new BoardService();
         }
 
+        // Test to ensure the board is initialized correctly
         [Fact]
         public void InitializeBoard_PlacesCorrectShips()
         {
@@ -21,6 +23,7 @@ namespace Battleships.Tests
             Assert.Equal(2, _service.Ships.Where(s => s.Class == ShipClass.Destroyer).Count());
         }
 
+        // Test to ensure the board status is generated correctly
         [Fact]
         public void ShootAt_Miss_ReturnsFalse()
         {
@@ -40,6 +43,7 @@ namespace Battleships.Tests
             Assert.True(false, "Couldn't find empty coordinate");
         }
 
+        // Test to ensure the board status is generated correctly
         [Fact]
         public void AllShipsSunk_InitiallyFalse()
         {

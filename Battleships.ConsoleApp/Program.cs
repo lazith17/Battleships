@@ -8,8 +8,10 @@ namespace Battleships.ConsoleApp
 {
     class Program
     {
+
         static async Task Main(string[] args)
         {
+            // Initialize the game client with the API base URL
             var client = new GameClient("https://localhost:1717/api/battleships/");
             await client.RunGame();
         }
@@ -17,17 +19,22 @@ namespace Battleships.ConsoleApp
 
     public class GameClient
     {
+        // Client for interacting with the Battleships API
         private readonly HttpClient _client;
         private readonly JsonSerializerOptions _jsonOptions;
 
+
+        // Constructor initializes the HttpClient with the base URL of the API
         public GameClient(string baseUrl)
         {
             _client = new HttpClient { BaseAddress = new Uri(baseUrl) };
             _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
+        // Main method to run the Battleships game
         public async Task RunGame()
         {
+            // Display game instructions and initial board
             Console.WriteLine("BATTLESHIPS GAME");
             Console.WriteLine("Enter coordinates (e.g., A5) to shoot");
             Console.WriteLine("Commands: board (show board), new (new game), exit");
@@ -40,6 +47,7 @@ namespace Battleships.ConsoleApp
                 Console.Write("> ");
                 var input = Console.ReadLine()?.Trim().ToUpper();
 
+                // Handle user input commands
                 switch (input)
                 {
                     case "EXIT":
@@ -60,10 +68,12 @@ namespace Battleships.ConsoleApp
             }
         }
 
+        // Processes the shot at the given coordinate
         private async Task ProcessShot(string coordinate)
         {
             try
             {
+                // Validate the coordinate format (e.g., A5, B10)
                 var response = await _client.PostAsJsonAsync("shoot", coordinate);
 
                 if (!response.IsSuccessStatusCode)
@@ -86,6 +96,7 @@ namespace Battleships.ConsoleApp
 
                 if (result.GameOver)
                 {
+                    // Game is over, all ships sunk
                     Console.WriteLine("CONGRATULATIONS! You won!");
                     Console.WriteLine("Starting new game...");
                     await StartNewGame();
@@ -97,10 +108,12 @@ namespace Battleships.ConsoleApp
             }
         }
 
+        // Displays the current game board
         private async Task DisplayBoard()
         {
             try
             {
+                // Get the current board status from the API
                 var board = await _client.GetStringAsync("board");
                 Console.WriteLine(board);
             }
@@ -110,10 +123,12 @@ namespace Battleships.ConsoleApp
             }
         }
 
+        // Starts a new game by calling the API endpoint
         private async Task StartNewGame()
         {
             try
             {
+                // Reset the board by calling the new game endpoint
                 await _client.PostAsync("new", null);
                 Console.WriteLine("New game started");
                 await DisplayBoard();
@@ -125,6 +140,7 @@ namespace Battleships.ConsoleApp
         }
     }
 
+    // Response model for the shoot endpoint
     public class ShootResponse
     {
         public bool Hit { get; set; }
