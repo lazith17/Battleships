@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Battleships.Api.Controllers
 {
-    // Controller for handling battleship game requests
+    // Controller for handling battleship game requests.
     [Route("api/[controller]")]
     [ApiController]
     public class BattleshipsController : ControllerBase
