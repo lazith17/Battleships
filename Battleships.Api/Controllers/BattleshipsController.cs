@@ -68,16 +68,20 @@ namespace Battleships.Api.Controllers
         // Endpoint to get the list of ships
         internal (int row, int col) ParseCoordinate(string coordinate)
         {
+            // Validate and parse the coordinate string (e.g., "A1", "B2")
             if (string.IsNullOrWhiteSpace(coordinate))
                 throw new ArgumentException("Coordinate cannot be empty");
 
+            // Ensure the coordinate is in the correct format
             if (coordinate.Length < 2)
                 throw new ArgumentException("Coordinate must be at least 2 characters");
 
+            // 
             var colChar = char.ToUpper(coordinate[0]);
             if (colChar < 'A' || colChar > 'J')
                 throw new ArgumentException("Column must be between A and J");
 
+            // Parse the row part of the coordinate
             if (!int.TryParse(coordinate.Substring(1), out var row) || row < 1 || row > 10)
                 throw new ArgumentException("Row must be between 1 and 10");
 
@@ -87,6 +91,7 @@ namespace Battleships.Api.Controllers
         // Internal method to check if a ship is sunk at the given coordinate
         internal string CheckForSunkShip(int row, int col)
         {
+            // Check if the ship at the given coordinate is sunk
             var ship = _boardService.GetShipAtCoordinate(new Coordinate(row, col));
             return ship?.IsSunk == true ? ship.Class.ToString() : null;
         }

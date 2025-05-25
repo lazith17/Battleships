@@ -32,6 +32,7 @@ namespace Battleships.Tests
             {
                 for (int col = 0; col < 10; col++)
                 {
+                    // Check if the coordinate is empty
                     var coordinate = new Coordinate(row, col);
                     if (_service.GetShipAtCoordinate(coordinate) == null)
                     {
