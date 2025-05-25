@@ -14,7 +14,7 @@ namespace Battleships.Api.Controllers
         private readonly IBoardService _boardService;
         private readonly ILogger<BattleshipsController> _logger;
 
-        // Dependency injection of the board service and logger
+        // Dependency injection of the board service and logger.
         public BattleshipsController(IBoardService boardService, ILogger<BattleshipsController> logger)
         {
             _boardService = boardService;
